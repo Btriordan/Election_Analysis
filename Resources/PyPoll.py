@@ -54,32 +54,50 @@ with open(file_to_load) as election_data:
         # Add a vote to that candidate's count
         candidate_votes[candidate_name] += 1
 
+# Save the results to our text file.
+with open(file_to_save, "w") as txt_file:
 
-# Print the candidate vote dictionary.
-print(candidate_votes)
+    election_results = (
+        f"\nElection Results\n"
+        f"-------------------------\n"
+        f"Total Votes: {total_votes:,}\n"
+        f"-------------------------\n")
+    print(election_results, end="")
+    txt_file.write(election_results)
 
-#Iterate through the candidate list.
-for candidate in candidate_votes:
-    #Retrieve vote count of a candidate.
-    votes = candidate_votes[candidate]
+    # Print the candidate vote dictionary.
+    print(candidate_votes)
 
-    #Calculate the percentage of votes.
-    vote_percentage = round(int(votes) / int(total_votes) * 100,1)
+    #Iterate through the candidate list.
+    for candidate in candidate_votes:
+        #Retrieve vote count of a candidate.
+        votes = candidate_votes[candidate]
 
-    print(f"{candidate}: {vote_percentage:.1f}% ({votes:,})\n")
+        #Calculate the percentage of votes.
+        vote_percentage = round(int(votes) / int(total_votes) * 100,1)
 
-    if (votes > winning_count) and (vote_percentage > winning_percentage):
-         # If true then set winning_count = votes and winning_percent =
-         # vote_percentage.
-         winning_count = votes
-         winning_percentage = vote_percentage
-         # And, set the winning_candidate equal to the candidate's name.
-         winning_candidate = candidate
+        candidate_results = (f"{candidate}: {vote_percentage:.1f}% ({votes:,})\n")
+        # Print each candidate, their voter count, and percentage to the terminal.
+        print(candidate_results)
+        #  Save the candidate results to our text file.
+        txt_file.write(candidate_results)
 
-winning_candidate_summary = (f"--------------------\n"
-    f"Winner: {winning_candidate}\n"
-    f"Winning Vote Count: {winning_count:,}\n"
-    f"Winning Percentage: {winning_percentage:.1f}%\n"
-    f"--------------------\n")
+        if (votes > winning_count) and (vote_percentage > winning_percentage):
+            # If true then set winning_count = votes and winning_percent =
+            # vote_percentage.
+            winning_count = votes
+            winning_percentage = vote_percentage
+            # And, set the winning_candidate equal to the candidate's name.
+            winning_candidate = candidate
 
-print(winning_candidate_summary)
+    winning_candidate_summary = (f"--------------------\n"
+        f"Winner: {winning_candidate}\n"
+        f"Winning Vote Count: {winning_count:,}\n"
+        f"Winning Percentage: {winning_percentage:.1f}%\n"
+        f"--------------------\n")
+
+    print(winning_candidate_summary)
+
+    txt_file.write(winning_candidate_summary)
+    
+
